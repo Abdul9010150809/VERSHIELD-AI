@@ -1,0 +1,197 @@
+openapi: 3.0.3
+info:
+  title: VeriShield AI SaaS API
+  description: Enterprise deepfake detection and prevention platform
+  version: 1.0.0
+  contact:
+    name: VeriShield Support
+    email: support@verishield.ai
+
+servers:
+  - url: https://api.verishield.ai/v1
+    description: Production server
+  - url: http://localhost:8000/api/v1
+    description: Development server
+
+security:
+  - bearerAuth: []
+
+paths:
+  /analyze/stream:
+    post:
+      summary: Analyze video/audio stream for deepfakes
+      description: Real-time analysis of media streams for deepfake detection
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - video_b64
+                - audio_b64
+                - transaction_amount
+              properties:
+                video_b64:
+                  type: string
+                  description: Base64-encoded video data
+                audio_b64:
+                  type: string
+                  description: Base64-encoded audio data
+                metadata:
+                  type: object
+                  description: Additional transaction metadata
+                transaction_amount:
+                  type: number
+                  description: Transaction amount in USD
+      responses:
+        '200':
+          description: Analysis completed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  decision:
+                    type: string
+                    enum: [REAL, FAKE]
+                  reasoning:
+                    type: string
+                  vision_score:
+                    type: number
+                    minimum: 0
+                    maximum: 1
+                  acoustic_score:
+                    type: number
+                    minimum: 0
+                    maximum: 1
+                  transaction_amount:
+                    type: number
+        '400':
+          description: Invalid request
+        '401':
+          description: Unauthorized
+        '429':
+          description: Rate limit exceeded
+
+  /dashboard:
+    get:
+      summary: Get security dashboard data
+      description: Retrieve real-time security metrics and threat data
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Dashboard data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total_scans:
+                    type: integer
+                  blocked_transactions:
+                    type: integer
+                  avg_response_time:
+                    type: number
+                  active_threats:
+                    type: integer
+                  recent_detections:
+                    type: array
+                    items:
+                      type: object
+
+  /auth/login:
+    post:
+      summary: Microsoft Entra ID SSO login
+      description: Authenticate user via Microsoft Entra ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - code
+              properties:
+                code:
+                  type: string
+                  description: OAuth authorization code
+      responses:
+        '200':
+          description: Authentication successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  access_token:
+                    type: string
+                  token_type:
+                    type: string
+                    enum: [bearer]
+                  expires_in:
+                    type: integer
+
+  /billing/subscription:
+    get:
+      summary: Get subscription details
+      description: Retrieve current subscription and billing information
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Subscription data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  plan:
+                    type: string
+                    enum: [startup, enterprise, ultimate]
+                  status:
+                    type: string
+                    enum: [active, past_due, canceled]
+                  current_period_end:
+                    type: string
+                    format: date-time
+                  usage:
+                    type: object
+                    properties:
+                      scans_used:
+                        type: integer
+                      scans_limit:
+                        type: integer
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    Error:
+      type: object
+      properties:
+        detail:
+          type: string
+      required:
+        - detail
+
+    TenantContext:
+      type: object
+      properties:
+        tenant_id:
+          type: string
+        organization_name:
+          type: string
+        role:
+          type: string
+          enum: [admin, security_analyst, auditor]
+      required:
+        - tenant_id
+        - role

@@ -1,0 +1,17 @@
+Collecting azure-ai-textanalytics
+  Using cached azure_ai_textanalytics-5.3.0-py3-none-any.whl.metadata (82 kB)
+Requirement already satisfied: azure-core<2.0.0,>=1.24.0 in ./venv/lib/python3.12/site-packages (from azure-ai-textanalytics) (1.37.0)
+Collecting azure-common~=1.1 (from azure-ai-textanalytics)
+  Using cached azure_common-1.1.28-py2.py3-none-any.whl.metadata (5.0 kB)
+Requirement already satisfied: isodate<1.0.0,>=0.6.1 in ./venv/lib/python3.12/site-packages (from azure-ai-textanalytics) (0.7.2)
+Requirement already satisfied: typing-extensions>=4.0.1 in ./venv/lib/python3.12/site-packages (from azure-ai-textanalytics) (4.15.0)
+Requirement already satisfied: requests>=2.21.0 in ./venv/lib/python3.12/site-packages (from azure-core<2.0.0,>=1.24.0->azure-ai-textanalytics) (2.32.5)
+Requirement already satisfied: charset_normalizer<4,>=2 in ./venv/lib/python3.12/site-packages (from requests>=2.21.0->azure-core<2.0.0,>=1.24.0->azure-ai-textanalytics) (3.4.4)
+Requirement already satisfied: idna<4,>=2.5 in ./venv/lib/python3.12/site-packages (from requests>=2.21.0->azure-core<2.0.0,>=1.24.0->azure-ai-textanalytics) (3.11)
+Requirement already satisfied: urllib3<3,>=1.21.1 in ./venv/lib/python3.12/site-packages (from requests>=2.21.0->azure-core<2.0.0,>=1.24.0->azure-ai-textanalytics) (2.6.2)
+Requirement already satisfied: certifi>=2017.4.17 in ./venv/lib/python3.12/site-packages (from requests>=2.21.0->azure-core<2.0.0,>=1.24.0->azure-ai-textanalytics) (2026.1.4)
+Using cached azure_ai_textanalytics-5.3.0-py3-none-any.whl (298 kB)
+Using cached azure_common-1.1.28-py2.py3-none-any.whl (14 kB)
+Installing collected packages: azure-common, azure-ai-textanalytics
+
+Successfully installed azure-ai-textanalytics-5.3.0 azure-common-1.1.28
